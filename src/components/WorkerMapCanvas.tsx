@@ -27,7 +27,7 @@ export default function WorkerMapCanvas({
   onSelect,
 }: {
   workers: Worker[];
-  selectedId?: string;
+  selectedId?: string | undefined;
   onSelect: (w: Worker) => void;
 }) {
   return (
