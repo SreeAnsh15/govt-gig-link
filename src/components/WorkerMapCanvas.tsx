@@ -1,4 +1,5 @@
-import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 import L from "leaflet";
 import { CUSTOMER_LOCATION, inr, type Worker } from "@/lib/api";
 
@@ -19,6 +20,21 @@ function pin(label: string, rate: string, tone: "worker" | "me", active: boolean
         </div>
       </div>`,
   });
+}
+
+function AutoSize() {
+  const map = useMap();
+  useEffect(() => {
+    const fix = () => map.invalidateSize();
+    const t = setTimeout(fix, 250);
+    const ro = new ResizeObserver(fix);
+    ro.observe(map.getContainer());
+    return () => {
+      clearTimeout(t);
+      ro.disconnect();
+    };
+  }, [map]);
+  return null;
 }
 
 export default function WorkerMapCanvas({
@@ -42,6 +58,7 @@ export default function WorkerMapCanvas({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
+      <AutoSize />
       <Circle
         center={[CUSTOMER_LOCATION.lat, CUSTOMER_LOCATION.lng]}
         radius={1600}
