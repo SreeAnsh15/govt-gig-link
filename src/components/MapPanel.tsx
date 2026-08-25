@@ -31,7 +31,7 @@ export function MapPanel({
   const sorted = [...workers].sort((a, b) => a.distanceKm - b.distanceKm);
 
   return (
-    <section className="surface-card flex min-h-[560px] flex-col overflow-hidden lg:min-h-0">
+    <section className="surface-card flex min-h-[560px] flex-col overflow-hidden lg:min-h-[720px]">
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-3 sm:px-5">
         <div className="min-w-0">
           <h2 className="truncate text-sm font-bold text-navy">
