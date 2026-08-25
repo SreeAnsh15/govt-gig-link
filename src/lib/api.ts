@@ -114,7 +114,7 @@ function mockMatch(category: string): MatchResult {
     } satisfies Worker;
   });
   return {
-    worker: nearby[0],
+    worker: nearby[0]!,
     nearby,
     breakdown: { proximity: 40, trust: 30, idle: 30 },
   };
@@ -159,15 +159,15 @@ export async function matchAndPrice(category: string): Promise<MatchResult> {
         .map((r, i) =>
           normaliseWorker(
             (r ?? {}) as Record<string, unknown>,
-            fallback.nearby[i % fallback.nearby.length],
+            fallback.nearby[i % fallback.nearby.length]!,
           ),
         )
     : fallback.nearby;
 
   const rawTop = (data["worker"] ?? data["best_match"] ?? data["match"]) as unknown;
   const worker = rawTop
-    ? normaliseWorker(rawTop as Record<string, unknown>, nearby[0])
-    : nearby[0];
+    ? normaliseWorker(rawTop as Record<string, unknown>, nearby[0]!)
+    : nearby[0]!;
 
   const bd = (data["breakdown"] ?? data["weights"] ?? {}) as Record<string, unknown>;
   return {
@@ -264,7 +264,7 @@ const VOICE_SAMPLES: Record<string, VoiceProfile> = {
 };
 
 export async function voiceOnboard(lang: string): Promise<VoiceProfile> {
-  const fallback = VOICE_SAMPLES[lang] ?? VOICE_SAMPLES["en"];
+  const fallback = VOICE_SAMPLES[lang] ?? VOICE_SAMPLES["en"]!;
   const data = await post<Record<string, unknown>>("/api/workers/voice-onboard", {
     language: lang,
     transcript: fallback.transcript,
